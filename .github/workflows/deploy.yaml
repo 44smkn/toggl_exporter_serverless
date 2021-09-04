@@ -15,7 +15,6 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v2
-        ref: ${{ github.head_ref }}
       - uses: actions/setup-python@v2 # for execute sam-cli
         with:
           python-version: "3.8"
