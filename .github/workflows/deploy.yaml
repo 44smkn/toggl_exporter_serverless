@@ -1,0 +1,34 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - .github/workflows/deploy.yaml
+      - toggl-exporter/**
+      - template.yaml
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v2
+        ref: ${{ github.head_ref }}
+      - uses: actions/setup-python@v2 # for execute sam-cli
+        with:
+          python-version: "3.8"
+      - uses: aws-actions/setup-sam@v1
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+      - uses: actions/setup-go@v2
+        with:
+          go-version: "1.16.7"
+      - run: make build
+      - run: make deploy
+        env:
+          TOGGL_API_KEY: ${{ secrets.TOGGL_API_KEY }}
