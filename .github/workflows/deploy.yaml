@@ -8,6 +8,7 @@ on:
       - .github/workflows/deploy.yaml
       - toggl-exporter/**
       - template.yaml
+      - Makefile
 
 jobs:
   build-deploy:
