@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-go@v2
         with:
           go-version: "1.16.7"
-      - run: make build
-      - run: make deploy
+      - run: sam build
+      - run: sam deploy --stack-name toggl-exporter --parameter-overrides TogglApiKey=${TOGGL_API_KEY} --capabilities CAPABILITY_IAM --resolve-s3 --no-confirm-changeset --no-fail-on-empty-changeset
         env:
           TOGGL_API_KEY: ${{ secrets.TOGGL_API_KEY }}
